@@ -80,16 +80,16 @@ class GoogleMapController extends Controller
 
     /**
      * Price level reference from google api.
-     * @param int $level
      * https://developers.google.com/places/web-service/details
+     * @param int $level
      * @return string
      */
     private function getPriceRateText($level)
     {
         if (is_null($level)) {
-            $text = "ไม่มีข้อมูล";
+            $text = "No information";
         } else {
-            $textArray = ['ฟรี', 'ราคาไม่แพง', 'ปานกลาง', 'เเพง', 'แพงมาก'];
+            $textArray = ['Free', 'Inexpensive', 'Moderate', 'Expensive', 'Very Expensive'];
             $text = $textArray[$level];
         }
         return $text;
@@ -118,12 +118,12 @@ class GoogleMapController extends Controller
                 }
                 if (isset($location->opening_hours)) {
                     if ($location->opening_hours->open_now) {
-                        $location->opening_hours_text = 'เปิดบริการ';
+                        $location->opening_hours_text = 'Open';
                     } else {
-                        $location->opening_hours_text = 'ปิดบริการ';
+                        $location->opening_hours_text = 'Closed';
                     }
                 } else {
-                    $location->opening_hours_text = 'ไม่มีข้อมูล';
+                    $location->opening_hours_text = 'No information';
                 }
             }
         }
