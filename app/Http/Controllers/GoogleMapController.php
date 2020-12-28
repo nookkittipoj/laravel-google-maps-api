@@ -41,14 +41,14 @@ class GoogleMapController extends Controller
             $paramsString = $this->paramsToString($params);
             // Check cache first before call service.
             // Call google api service default response as json.
-            if (Cache::store('redis')->tags([$serviceName])->has($paramsString)) {
-                $googleMapService = Cache::store('redis')->tags([$serviceName])->get($paramsString);
+            if (Cache::store('file')->has($serviceName.$paramsString)) {
+                $googleMapService = Cache::store('file')->get($serviceName.$paramsString);
             } else {
                 $googleMapService = GoogleMaps::load($serviceName)
                     ->setParam($params)
                     ->get();
-                // Cache into redis use parameter as string for separate search result.
-                Cache::store('redis')->tags([$serviceName])->put($paramsString, $googleMapService, now()->addDay());
+                // Cache response use parameter as string for separate search result.
+                Cache::store('file')->put($serviceName.$paramsString, $googleMapService, now()->addDay());
             }
             $googleMapService = json_decode($googleMapService);
             $googleMapService = $this->transformResult($googleMapService);
